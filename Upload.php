@@ -1,5 +1,6 @@
 <?php
   error_reporting(0);
+  date_default_timezone_set('America/Sao_Paulo');
   header('Content-Type: text/html; charset=utf-8');
 
   // Nome das variáveis POST
@@ -11,16 +12,16 @@
   $informacoes = $_POST['informacoes'];
   
   //Variáveis para se conectar ao servidor:
-  $servername = "";
-  $username = "";
-  $password = "";
-  $dbname = "";
+  $servername = getenv('DB_HOST') ? getenv('DB_HOST') : 'db';
+  $username = getenv('DB_USER') ? getenv('DB_USER') : 'compleaks';
+  $password = getenv('DB_PASSWORD') ? getenv('DB_PASSWORD') : 'compleaks';
+  $dbname = getenv('DB_NAME') ? getenv('DB_NAME') : 'compleaks';
   $tbname = "";
   
   //Criando conexão:
-  $conn = mysql_connect($servername, $username, $password, $dbname);
+  $conn = mysql_connect($servername, $username, $password);
   if (!$conn) {
-      die("Connection failed: " . mysql_connect_error());
+      die("Connection failed: " . mysql_error());
   } /* else echo "Conectado ao banco de dados {$dbname}<br>"; */
   mysql_select_db($dbname);
   
@@ -31,15 +32,15 @@
   mysql_query('SET character_set_results=utf8');
 
   //Inclui as bibliotecas que serão utilizadas:
-  include '..library/config.php';
-  include '..library/opendb.php';
-  include '..library/closedb.php';
+  if (file_exists('library/config.php')) if (file_exists("library/config.php")) include "library/config.php";
+  if (file_exists('library/opendb.php')) if (file_exists("library/opendb.php")) include "library/opendb.php";
+  if (file_exists('library/closedb.php')) if (file_exists("library/closedb.php")) include "library/closedb.php";
   include 'Funções.php';
   
   //Certifica que o arquivo não esta errado:
   $arquivoErrado = 0;
   //Arquivos que serão compactados:
-  $file_to_zip[count($_FILES['userfile']['tmp_name'])];
+  $file_to_zip = array();
   //Diretório a ser utilização para o upload dos arquivos:
   $uploaddir = 'uploads/';
   //Tamanho total do arquivo:
@@ -164,7 +165,6 @@
   }
   mysql_close($conn);
 ?>
-
 
 
 
