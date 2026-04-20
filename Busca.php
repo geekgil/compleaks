@@ -2,21 +2,21 @@
   error_reporting(0);
   header('Content-Type: text/html; charset=utf-8');
   
-  include 'library/config.php';
-  include 'library/opendb.php';
+  if (file_exists('library/config.php')) if (file_exists("library/config.php")) include "library/config.php";
+  if (file_exists('library/opendb.php')) if (file_exists("library/opendb.php")) include "library/opendb.php";
 
   //Conectando ao servidor:
-  $servername = "";
-  $username = "";
-  $password = "";
-  $dbname = "";
+  $servername = getenv('DB_HOST') ? getenv('DB_HOST') : 'db';
+  $username = getenv('DB_USER') ? getenv('DB_USER') : 'compleaks';
+  $password = getenv('DB_PASSWORD') ? getenv('DB_PASSWORD') : 'compleaks';
+  $dbname = getenv('DB_NAME') ? getenv('DB_NAME') : 'compleaks';
   $tbname = "";
   
   // Create connection
-  $conn = mysql_connect($servername, $username, $password, $dbname);
+  $conn = mysql_connect($servername, $username, $password);
   // Check connection
   if (!$conn) {
-      die("Connection failed: " . mysql_connect_error());
+      die("Connection failed: " . mysql_error());
   }
   /* else echo "Conectado ao banco de dados {$dbname}<br>"; */
   
